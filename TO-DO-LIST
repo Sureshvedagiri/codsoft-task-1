@@ -1,0 +1,36 @@
+from tkinter import *
+root = Tk()
+root.title('My To-Do List')
+root.geometry('300x400')
+root.config(bg="blue")
+tasks_list=[]
+def add_item(entry: Entry, listbox: Listbox):
+    new_task = entry.get()
+    listbox.insert(END, new_task)
+    tasks_list.append(new_task)
+    entry.delete(0,END)
+
+def delete_item(listbox: Listbox):
+    listbox.delete(ACTIVE)
+    for line in tasks_list:
+        if listbox.get(ACTIVE) == line[:-2]:
+            tasks_list.remove(line)
+    entry.delete(0,END)
+
+label_title=Label(root, text='To Do List', bg='coral', font=("Times", 15), wraplength=300)
+label_title.place(x=90, y=10)
+tasks = Listbox(root, selectbackground='orange', bg='yellow', font=('verdana', 12), height=12, width=25)
+scroller = Scrollbar(root, orient=VERTICAL, command=tasks.yview)
+scroller.place(x=260, y=50, height=232)
+tasks.config(yscrollcommand=scroller.set)
+tasks.place(x=35, y=50)
+for task in tasks_list:
+    tasks.insert(END, task)
+entry= Entry(root, width=37)
+entry.place(x=35, y=310)
+add_btn = Button(root, text='Add Item', bg='cyan', width=10, font=('verdana', 12),command=lambda: add_item(entry, tasks))
+add_btn.place(x=45, y=350)
+delete_btn = Button(root, text='Delete Item', bg='Azure', width=10, font=('verdana', 12),command=lambda: delete_item(tasks))
+delete_btn.place(x=150, y=350)
+root.update()
+root.mainloop()
